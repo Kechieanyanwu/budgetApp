@@ -1,2 +1,4 @@
 # budgetApp
-Envelope Budgeting application 
+Envelope Budgeting application.
+
+WIP.
