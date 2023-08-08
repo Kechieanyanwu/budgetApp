@@ -1,31 +1,22 @@
 # budgetApp
-Envelope Budgeting application.
+WIP Envelope Budgeting application.
 
-WIP.
 
 How to run:
 1. Clone this repository to your folder
 2. Run "npm install" in your terminal to install dependecies
 3. Run "npm run start" to launch server. This server will relaunch any time you save, as it is using "nodemon"
 
+Update:
+- Decided to switch from having envelope-based API endpoints, to having action-based API endpoints
+    - Logic behind this is that the actions per envelope are the same, so this would help avoid code smell 
+    - Should also allow for creation of envelopes by using an action endpoint to create and return a new envelope
 
-Notes: 
-- I am tailoring this envelope budgeting application to my personal needs. Broad categories will include: 
-    - Bills
-    - Food
-    - Transportation
-    - Shopping
-    - Saving
-    - Gifts
-
-To-Do / Questions / Thoughts / Scratch space
-- Get amount starting each month with
-- How are items being split?
-- Include validation for amount in envelope
-- Should there be a list of all the envelopes returned?
-- When income is recorded, softwar should distribute a portion to each envelop
-- When purchase is made, software should deduct from the respective envelop
-- Should there be a create envelop function / endpoint? 
+My current process: 
+1. Checking my application requirements
+2. Building out the required API endpoints in the api.js file
+3. Building the logic in the logic.js file
+4. Iterating between 2 and 3 
 
 
 Project Objectives:
@@ -36,3 +27,4 @@ Create endpoint(s) to update envelope balances
 Use Git version control to keep track of your work
 Use the command line to navigate your files and folders
 Use Postman to test API endpoints
+
