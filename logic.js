@@ -46,7 +46,18 @@ class Envelope {
     
 };
 
-const bills = new Envelope("bills", 150);
+let envelopes = []; //create new envelopes array
+
+
+
+
+
+
+
+
+
+// Testing the class
+// const bills = new Envelope("bills", 150);
 
 
 // console.log(bills.info());
