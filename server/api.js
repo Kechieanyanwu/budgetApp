@@ -1,6 +1,6 @@
 const express = require("express");
 const apiRouter = express();
-const {Envelope} = require("./logic"); // to be updated as I create additional functions 
+const {Envelope} = require("../logic"); // to be updated as I create additional functions 
 
 // include input validation e.g. for amount
 // include validation that envelope exists 
