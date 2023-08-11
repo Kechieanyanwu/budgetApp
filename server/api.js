@@ -1,7 +1,8 @@
 const express = require("express");
 const apiRouter = express();
+const {Envelope} = require("./logic"); // to be updated as I create additional functions 
 
-// include input validation e.g. for amount 
+// include input validation e.g. for amount
 // include validation that envelope exists 
 // include error handling for thrown errors from logic.js
 // Ensure "Envelope" is spelled correctly everywhere. NOT "ENVELOP"
@@ -9,9 +10,28 @@ const apiRouter = express();
 
 // Top level api functionality lives here
 
+//create middleware for validating inputs
+const validateEnvelopeDetails = (req, res, next) => {
+    if (req.body.name && req.body.balance) {
+        req.name = req.body.name;
+        req.balance = req.body.balance;
+
+    } else {
+        const err = new Error("New Envelope must have")
+    }
+
+    //check if you have both req.name and req.balance
+        //if no, next(err)
+    //if yes, attach to req
+        //call next()
+};
+
 // Create an envelope
 apiRouter.post("/create", (req, res, next) => {
-    // name and balance should be in request body
+    //include request body validation 
+    const newEnvelope = new Envelope() // name and balance should be in request body and to include parameters
+    //createEnvelope function 
+        //return created envelope
 })
 
 // Return all envelopes 
