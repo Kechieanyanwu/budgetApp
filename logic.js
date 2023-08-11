@@ -1,10 +1,8 @@
-// for application logic 
-
 // Creating Envelope class, to enable me interact with envelopes
 class Envelope {
     constructor(name, balance) {
         if (typeof name === "string" && (typeof balance === "number" || !balance)) {
-            this.name = name;
+            this.name = name.toLowerCase();
             this.balance = balance || 0;
         } else {
             const err = new Error("Name must be a string; Opening balance must be a number or left blank for 0 balance"); 
@@ -13,14 +11,14 @@ class Envelope {
         }
     }
 
-    info() { // the way I intend to access the envelope information, as opposed to just printing out
+    info() { // the way I intend to access the envelope information, as opposed to just printing out the entire object
         return {
             name: this.name,
             balance: this.balance
         }
     }
 
-    getBalance() { // in case I just want the balance of the envelope
+    getBalance() { // in case I just want the balance of the envelope.
         return this.balance;
     }
 
@@ -46,28 +44,74 @@ class Envelope {
     
 };
 
-var envelopes = []; //create new envelopes array
+// Creating initial, dummy envelopes
+const bills = new Envelope("bills", 150);
+const food = new Envelope("food", 150);
+const tithe = new Envelope("tithe");
+
+var envelopes = [bills, food, tithe]; //create new envelopes array
 
 
-//create new Envelope 
+// NOTE: ALWAYS return envelope.info - you never just want to return Envelope object, but the information about it as an object
+
+
+//create new Envelope function 
+const createNewEnvelope = (name, balance) => {
+    const newEnvelope = new Envelope(name, balance);
+    envelopes.push(newEnvelope.info()); //test that this returns accurately in return array func
+    return newEnvelope.info(); //you never just want to return Envelope object, but the information about it as an object
+};
+
+// get envelope from array by name 
+const getEnvelopeByName = (name) => {
+    const foundEnvelope = envelopes.find((envelope) => envelope.name === name);
+    if (foundEnvelope) {
+        return foundEnvelope.info();
+    }
+    const err = new Error("Envelope name doesn't exist");
+    err.status = 400;
+    throw err; //make sure this is caught 
+}
+
+// Return array of envelopes
+const getAllEnvelopes = () => {
+    // console.log(envelopes); test
+    return JSON.stringify(envelopes); 
+}
+
+
+// Spend from an envelope
+const spendFromEnvelope = (envelope, amount) => {
+    envelope.spend(amount);
+    return envelope.info();
+}
+
+
+
+
+// Add to an envelope
 
 
 
 
 
 
-// Testing the class
-// const bills = new Envelope("bills", 150);
+// Transfer from one envelope to another
 
 
-// console.log(bills.info());
-// bills.add(130);
-// console.log(bills.info());
 
-// bills.spend(100);
-// console.log(bills.info());
-// console.log(bills.getBalance());
+
+
+// Delete an envelope
+    //should use the splice function here, I believe 
+
+
+
+
 
 module.exports = {
     Envelope,
+    createNewEnvelope,
+    getEnvelopeByName,
+    getAllEnvelopes,
 }

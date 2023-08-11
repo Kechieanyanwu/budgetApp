@@ -1,53 +1,67 @@
 const express = require("express");
 const apiRouter = express();
-const {Envelope} = require("../logic"); // to be updated as I create additional functions 
-
-// include input validation e.g. for amount
-// include validation that envelope exists 
-// include error handling for thrown errors from logic.js
-// Ensure "Envelope" is spelled correctly everywhere. NOT "ENVELOP"
+const {Envelope,
+    createNewEnvelope,
+    getEnvelopeByName,
+    getAllEnvelopes,} = require("../logic"); // to be updated as I create additional functions in logic.js
 
 
-// Top level api functionality lives here
-
-//create middleware for validating inputs
-const validateEnvelopeDetails = (req, res, next) => {
-    if (req.body.name && req.body.balance) {
-        req.name = req.body.name;
-        req.balance = req.body.balance;
-
+//Middleware for validating new Envelope details
+const validateNewEnvelopeDetails = (req, res, next) => {
+    console.log(JSON.stringify(req.body)) //test
+    if (req.body.name) { // If the required envelope keys exist. Name MUST be present as we can start an envelope with 0 balance
+        req.name = String(req.body.name); 
+        req.balance = req.body.balance || undefined; // test that this works properly 
+        next();
     } else {
-        const err = new Error("New Envelope must have")
+    const err = new Error("New Envelope must have a name.");
+    err.status = 400;
+    next(err);
     }
-
-    //check if you have both req.name and req.balance
-        //if no, next(err)
-    //if yes, attach to req
-        //call next()
 };
 
+
+apiRouter.param("envelope", (req, res, next, envelope) => {
+    let foundEnvelope;
+    const envelopeName = envelope;
+
+    if (envelopeName) {
+        try {
+            foundEnvelope = getEnvelopeByName(String(envelopeName).toLowerCase());
+        } catch (err) {
+            next(err);
+            return;
+        }
+        req.envelope = foundEnvelope;
+        next();
+    } else {
+        const err = new Error("Please include an Envelope name.");
+        err.status = 400;
+        next(err);
+        }
+})
+
+
+
 // Create an envelope
-apiRouter.post("/create", (req, res, next) => {
-    //include request body validation 
-    const newEnvelope = new Envelope() // name and balance should be in request body and to include parameters
-    //createEnvelope function 
-        //return created envelope
+apiRouter.post("/create", validateNewEnvelopeDetails, (req, res, next) => {
+    const newEnvelope = createNewEnvelope(req.name, req.balance);
+    res.status(201).send(newEnvelope);
 })
 
 // Return all envelopes 
 apiRouter.get("/", (req, res, next) => {
-    // return all envelopes
-    // what will the shape of the return value be? An object? An array of objects? I think the later 
+    res.status(200).send(getAllEnvelopes());
 });
 
 // Return specific envelope 
 apiRouter.get("/:envelope", (req, res, next) => {
-    // should be in shape of an object, i.e. Envelope.info()
+    res.status(200).send(req.envelope);
 });
 
 // Spend from a specific envelope
-apiRouter.put("/spend/:envelope", (req, res, next) => {
-    // perhaps in request body, will include the amount to be spent? Or should this be in query param?
+apiRouter.put("/spend", (req, res, next) => {
+    //check that envelope and amount is there i.e. create middleware for both spend and envelope 
 });
 
 // Add to a specific envelope
@@ -66,8 +80,18 @@ apiRouter.put("/transfer", (req, res, next) => {
 
 apiRouter.delete("/:envelope", (req, res, next) => {
     // delete specific envelope
-})
+});
 
+const errorHandler = (err, req, res, next) => {
+    res.status(err.status).send(err.message);
+};
 
+apiRouter.use(errorHandler);
 
 module.exports = apiRouter;
+
+
+// include input validation e.g. for amount
+// include error handling for thrown errors from logic.js
+// Ensure "Envelope" is spelled correctly everywhere. NOT "ENVELOP"
+// to create tests!!
