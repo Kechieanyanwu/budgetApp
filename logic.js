@@ -13,7 +13,7 @@ class Envelope {
         }
     }
 
-    info() { // the way I intend to access the envelop information, as opposed to just printing out
+    info() { // the way I intend to access the envelope information, as opposed to just printing out
         return {
             name: this.name,
             balance: this.balance
@@ -46,10 +46,10 @@ class Envelope {
     
 };
 
-let envelopes = []; //create new envelopes array
+var envelopes = []; //create new envelopes array
 
 
-
+//create new Envelope 
 
 
 
@@ -67,3 +67,7 @@ let envelopes = []; //create new envelopes array
 // bills.spend(100);
 // console.log(bills.info());
 // console.log(bills.getBalance());
+
+module.exports = {
+    Envelope,
+}
